@@ -32,13 +32,10 @@ exports.validateRegister = (req, res, next) => {
     next();
 };
 
-exports.register = async (teq, res, next) => {
-    const user = new User({ 
-        email: req.body.email,
-        name: req.body.name 
-    })
-    const register = promisify(User.register, User);
+exports.register = async (req, res, next) => {
+    const user = new User({ email: req.body.email, name: req.body.name });
+    const register = promisify(User.register, User);// use promisify to return a promise. pass the method you want to promisify and the object it should bind to.
     await register(user, req.body.password);
-    res.send('it works');
-    next();
+    res.send('it works!!');
+    next();//pass to authController.login
 };

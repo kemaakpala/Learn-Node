@@ -50,7 +50,8 @@ html
       block content
     footer
       block footer
-      p (c) Wes Bos
+        .inner
+          p Wes Bos #{h.moment().format('YYYY')}
     block scripts
       script(src=`https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&libraries=places`)
       script(src="/dist/App.bundle.js")
