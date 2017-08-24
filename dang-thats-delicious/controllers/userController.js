@@ -36,6 +36,24 @@ exports.register = async (req, res, next) => {
     const user = new User({ email: req.body.email, name: req.body.name });
     const register = promisify(User.register, User);// use promisify to return a promise. pass the method you want to promisify and the object it should bind to.
     await register(user, req.body.password);
-    res.send('it works!!');
     next();//pass to authController.login
+};
+
+exports.account = (req, res) => {
+    res.render('account', {title: 'Edit Your Account'});
+}
+
+exports.updateAccount = async (req, res) => {
+    const updates = {
+        name: req.body.name,
+        email: req.body.email
+    };
+
+    const user =  await User.findOneAndUpdate(
+        { _id: req.user._id },//query  
+        { $set: updates }, //updates
+        { new: true, runValidators: true, context: 'query' }//options
+    );
+    req.flash('success', 'Updated the profile')
+    res.redirect('back');
 };

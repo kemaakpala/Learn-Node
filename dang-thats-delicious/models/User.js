@@ -19,10 +19,17 @@ const userSchema = new Schema({
         type: String,
         required: 'Please supply a name',
         trim: true
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
-userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
+//we add a virtual field. we use virtual fields are used for fields that can be generated on the fly.
+userSchema.virtual('gravatar').get(function(){
+    const hash = md5(this.email);
+    return `https://gravatar.com/avatar/${hash}?s=200`;
+});
+userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});// exposes the register method
 userSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model('User', userSchema);
