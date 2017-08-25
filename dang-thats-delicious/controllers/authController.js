@@ -19,11 +19,17 @@ exports.logout = (req, res) => {
 };
 
 exports.isLoggedIn = (req, res, next) =>{
+    
+    // if(req.isAuthenticated() && (req.url.indexOf('login') || req.url.indexOf('register'))){
+    //     console.log('req: ', req.url);
+    //     res.redirect('back');
+    //     return;
+    // } 
     //first check if the user is authenticated
     if(req.isAuthenticated()){
         next();// carry on they are logged in!
         return;
-    }    
+    }
     req.flash('error', 'Oops you must be logged in to do that!');
     res.redirect('/login');
 };
